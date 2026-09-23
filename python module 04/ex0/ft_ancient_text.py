@@ -14,7 +14,7 @@ def archive_process(archive_name: str) -> None:
         print(content)
         print("---")
         archive.close()
-        print(f"File '{archive}' closed.")
+        print(f"File '{archive_name}' closed.")
     except Exception as e:
         print(f"Error opening file '{archive_name}': {e}")
 
