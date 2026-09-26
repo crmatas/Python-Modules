@@ -4,7 +4,7 @@ from typing import Any
 
 class DataProcessor(ABC):
     def __init__(self) -> None:
-        self._storage = []
+        self._storage: list[Any] = []
         self._counter = 0
 
     @abstractmethod
@@ -100,9 +100,9 @@ class LogProcessor(DataProcessor):
 
 
 class DataStream():
-    def __init__(self):
+    def __init__(self) -> None:
         # I do _processors because is an internal atribute.
-        self._processors = []
+        self._processors: list[Any] = []
 
     def register_processor(self, proc: DataProcessor) -> None:
         self._processors.append(proc)
@@ -129,7 +129,7 @@ class DataStream():
                   f"remaining {remaining} on processor")
 
 
-def main():
+def main() -> None:
     print("=== Code Nexus - Data Stream ===")
     print("")
     print("Initialize Data Stream...")

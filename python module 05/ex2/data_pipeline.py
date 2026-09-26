@@ -11,7 +11,7 @@ class ExportPlugin(Protocol):
 
 class DataProcessor(ABC):
     def __init__(self) -> None:
-        self._storage = []
+        self._storage: list[Any] = []
         self._counter = 0
 
     @abstractmethod
@@ -85,11 +85,10 @@ class LogProcessor(DataProcessor):
         def validate_dict(data: Any) -> bool:
             if not isinstance(data, dict):
                 return False
-            return (
-                isinstance(data, dict) and
-                all(isinstance(k, str) and
-                    isinstance(v, str) for k, v in data.items())
-            )
+            return (isinstance(data, dict)
+                    and all(isinstance(k, str)
+                    and isinstance(v, str) for k, v in data.items())
+                    )
         if validate_dict(data):
             return True
         if isinstance(data, list) and all(validate_dict(x) for x in data):
@@ -104,12 +103,12 @@ class LogProcessor(DataProcessor):
                 log_str = f"{item['log_level']}: {item['log_message']}"
                 self._storage.append(log_str)
         else:
-            log_str = f"{item['log_level']}: {item['log_message']}"
+            log_str = f"{data['log_level']}: {data['log_message']}"
             self._storage.append(log_str)
 
 
 class DataStream():
-    def __init__(self):
+    def __init__(self) -> None:
         # I do _processors because is an internal atribute.
         self._processors: list[DataProcessor] = []
 
@@ -170,7 +169,7 @@ class JsonExportPlugin():
         print(output)
 
 
-def main():
+def main() -> None:
     print("=== Code Nexus - Data Stream ===")
     print("")
     print("Initialize Data Stream...")
@@ -191,13 +190,13 @@ def main():
             [3.14, -1, 2.71],
             [
                 {
-                 'log_level': 'WARNING',
-                 'log_message': 'Tenet access! Use ssh instead'
+                    'log_level': 'WARNING',
+                    'log_message': 'Tenet access! Use ssh instead'
                 },
                 {
-                 'log_level': 'INFO',
-                 'log_message': 'User wil is connected'
-                 }
+                    'log_level': 'INFO',
+                    'log_message': 'User wil is connected'
+                }
             ],
             42,
             ['Hi', 'five']]
@@ -218,6 +217,9 @@ def main():
              'Certificateexpires in 10 days'}],
         [32, 42, 64, 84, 128, 168],
         'World hello']
+    print("")
+    print("== DataStream statistics ==")
+    stream.print_processors_stats()  # this one is repeated on the sample.
     print("")
     print(f"Send the another batch of data: {data2}")
     stream.process_stream(data2)

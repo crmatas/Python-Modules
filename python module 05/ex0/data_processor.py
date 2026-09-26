@@ -3,8 +3,8 @@ from typing import Any
 
 
 class DataProcessor(ABC):
-    def __init__(self):
-        self._storage = []
+    def __init__(self) -> None:
+        self._storage: list[str] = []
         self._counter = 0
 
     @abstractmethod
@@ -97,11 +97,11 @@ class LogProcessor(DataProcessor):
                 log_str = f"{item['log_level']}: {item['log_message']}"
                 self._storage.append(log_str)
         else:
-            log_str = f"{item['log_level']}: {item['log_message']}"
+            log_str = f"{data['log_level']}: {data['log_message']}"
             self._storage.append(log_str)
 
 
-def main():
+def main() -> None:
     num_p = NumericProcessor()
     text_p = TextProcessor()
     log_p = LogProcessor()
@@ -111,7 +111,7 @@ def main():
     print(" Trying to validate input 'Hello':", num_p.validate("Hello"))
     print(" Test invalid ingestion of string 'foo' witout prior validation:")
     try:
-        num_p.ingest("foo")
+        num_p.ingest("foo")  # type: ignore[arg-type]
     except ValueError as e:
         print(" ", e)
     print(" Processing data: [1, 2, 3, 4, 5]")
